@@ -4,6 +4,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 const Widgets = ({ type }) => {
   let data;
 
