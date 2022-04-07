@@ -4,6 +4,7 @@ import Navbar from '../../components/navbar/Navbar';
 import Widgets from '../../components/widgets/Widgets';
 import Featured from '../../components/featured/Featured';
 import Chart from '../../components/chart/Chart';
+import Tables from '../../components/table/Table';
 function Home() {
   return (
     <div className='home'>
@@ -19,6 +20,10 @@ function Home() {
         <div className='charts'>
           <Featured />
           <Chart />
+        </div>
+        <div className='listContainer'>
+          <div className='listTitle'>Latest Tranasactions</div>
+          <Tables />
         </div>
       </div>
     </div>
