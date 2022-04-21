@@ -4,7 +4,7 @@ import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import List from './pages/list/List';
 import Single from './pages/single/Single';
-import NewP from './pages/new/NewP';
+import New from './pages/new/New';
 function App() {
   return (
     <div className='App'>
@@ -15,12 +15,12 @@ function App() {
           <Route path='users'>
             <Route index element={<List />} />
             <Route path=':userId' element={<Single />} />
-            <Route path='new' element={<NewP />} />
+            <Route path='new' element={<New />} />
           </Route>
           <Route path='products'>
             <Route index element={<List />} />
             <Route path=':productId' element={<Single />} />
-            <Route path='new' element={<NewP />} />
+            <Route path='new' element={<New />} />
           </Route>
         </Route>
       </Routes>
