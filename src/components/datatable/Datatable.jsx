@@ -24,8 +24,8 @@ function Datatable() {
       <DataGrid
         rows={userRows}
         columns={userColumns.concat(actionColumn)}
-        pageSize={7}
-        rowsPerPageOptions={[7]}
+        pageSize={9}
+        rowsPerPageOptions={[9]}
         checkboxSelection
       />
     </div>
