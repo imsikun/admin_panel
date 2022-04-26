@@ -10,11 +10,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
+import { Link } from 'react-router-dom';
+
 function Sidebar() {
   return (
     <div className='sidebar'>
       <div className='top'>
-        <span className='logo'>Admin</span>
+        <Link to='/' style={{ textDecoration: 'none', cursor: 'pointer' }}>
+          <span className='logo'>Admin</span>
+        </Link>
       </div>
       <hr />
       <div className='center'>
@@ -25,14 +29,25 @@ function Sidebar() {
             <span>Dashboard</span>
           </li>
           <p className='title'>LISTS</p>
-          <li>
-            <PersonIcon className='icon' />
-            <span>Users</span>
-          </li>
-          <li>
-            <InventoryIcon className='icon' />
-            <span>Products</span>
-          </li>
+          <Link
+            to={'/users'}
+            style={{ textDecoration: 'none', cursor: 'pointer' }}
+          >
+            <li>
+              <PersonIcon className='icon' />
+              <span>Users</span>
+            </li>
+          </Link>
+
+          <Link
+            to='/products'
+            style={{ textDecoration: 'none', cursor: 'pointer' }}
+          >
+            <li>
+              <InventoryIcon className='icon' />
+              <span>Products</span>
+            </li>
+          </Link>
           <li>
             <ProductionQuantityLimitsIcon className='icon' />
             <span>Orders</span>
