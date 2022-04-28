@@ -3,8 +3,31 @@ import Navbar from '../../components/navbar/Navbar';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import './new.scss';
 import { useState } from 'react';
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
+import { db } from '../../firebase';
+
 function New({ inputs, title }) {
   const [file, setFile] = useState('');
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await addDoc(collection(db, 'cities'), {
+        name: 'Los Angeles',
+        state: 'CA',
+        country: 'USA',
+        timeStamp: serverTimestamp(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className='new'>
@@ -26,7 +49,7 @@ function New({ inputs, title }) {
             />
           </div>
           <div className='right'>
-            <form>
+            <form onSubmit={handleAdd}>
               <div className='formInput'>
                 <label htmlFor='file'>
                   Image : <FileUploadIcon className='icon' />
@@ -46,7 +69,7 @@ function New({ inputs, title }) {
                 </div>
               ))}
 
-              <button>Send</button>
+              <button type='submit'>Send</button>
             </form>
           </div>
         </div>
