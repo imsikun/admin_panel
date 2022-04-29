@@ -3,34 +3,61 @@ import { DataGrid } from '@mui/x-data-grid';
 import { userColumns, userRows } from '../../datatablesource';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from 'firebase/firestore';
 import { db } from '../../firebase';
 
 function Datatable() {
   const [data, setData] = useState([]);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
-
   useEffect(() => {
-    const fetchData = async () => {
-      let list = [];
-      try {
-        const querySnapshot = await getDocs(collection(db, 'users'));
-        querySnapshot.forEach((doc) => {
+    // const fetchData = async () => {
+    //   let list = [];
+    //   try {
+    //     const querySnapshot = await getDocs(collection(db, 'users'));
+    //     querySnapshot.forEach((doc) => {
+    //       list.push({ id: doc.id, ...doc.data() });
+    //     });
+    //     // console.log(list);
+    //     setData(list);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // fetchData();\
+
+    //LISTEN TO REAL TIME DATA
+    const unsub = onSnapshot(
+      collection(db, 'users'),
+      (snapshot) => {
+        let list = [];
+        snapshot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        // console.log(list);
         setData(list);
-      } catch (error) {
-        console.log(error);
+      },
+      (err) => {
+        console.log(err);
       }
+    );
+    return () => {
+      unsub();
     };
-    fetchData();
   }, []);
 
-  console.log(data);
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(db, 'users', id));
+      setData(data.filter((item) => item.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const actionColumn = [
     {
@@ -49,6 +76,7 @@ function Datatable() {
             <div
               className='deleteButton'
               onClick={() => handleDelete(params.row.id)}
+              style={{ textDecoration: 'none', cursor: 'pointer' }}
             >
               Delete
             </div>
