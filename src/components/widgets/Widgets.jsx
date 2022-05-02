@@ -5,12 +5,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useEffect, useState } from 'react';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../.././firebase';
 const Widgets = ({ type }) => {
+  const [amount, setAmount] = useState(null);
+  const [diff, setDiff] = useState(null);
   let data;
-
-  //temporary amount
-  const amount = 100;
-  const percentage = 20;
 
   switch (type) {
     case 'user':
@@ -76,6 +77,35 @@ const Widgets = ({ type }) => {
       break;
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const today = new Date();
+      const lastMonth = new Date(new Date().setMonth(today.getMonth() - 1));
+      const prevMonth = new Date(new Date().setMonth(today.getMonth() - 2));
+
+      const lastMonthQuery = query(
+        collection(db, 'users'),
+        where('timeStamp', '<=', today),
+        where('timeStamp', '>', lastMonth)
+      );
+      const prevMonthQuery = query(
+        collection(db, 'user'),
+        where('timeStamp', '<=', lastMonth),
+        where('timeStamp', '>', prevMonth)
+      );
+      const lastMonthData = await getDocs(lastMonthQuery);
+      const prevMonthData = await getDocs(prevMonthQuery);
+
+      setAmount(lastMonthData.docs.length);
+      setDiff(
+        ((lastMonthData.docs.length - prevMonthData.docs.length) /
+          prevMonthData.docs.length) *
+          100
+      );
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className='widget'>
       <div className='left'>
@@ -88,7 +118,7 @@ const Widgets = ({ type }) => {
       <div className='right'>
         <div className='percentage positive'>
           <KeyboardArrowUpIcon />
-          {percentage}%
+          {/* {percentage}% */}
         </div>
         {data.icon}
       </div>
